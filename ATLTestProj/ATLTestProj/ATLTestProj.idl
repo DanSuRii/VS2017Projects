@@ -1,0 +1,18 @@
+// ATLTestProj.idl : IDL source for ATLTestProj
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ATLTestProj.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(3b45d432-470b-4a28-b9b8-ecda49340186),
+	version(1.0),
+]
+library ATLTestProjLib
+{
+	importlib("stdole2.tlb");
+};
+

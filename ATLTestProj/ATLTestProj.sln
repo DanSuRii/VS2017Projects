@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATLTestProj", "ATLTestProj\ATLTestProj.vcxproj", "{687C7D74-4382-4A41-AE17-28F556C22A11}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ATLTestProjPS", "ATLTestProjPS\ATLTestProjPS.vcxproj", "{6A4ECEB4-B163-435D-B96B-6CBCA20F77FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{687C7D74-4382-4A41-AE17-28F556C22A11} = {687C7D74-4382-4A41-AE17-28F556C22A11}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Debug|x64.ActiveCfg = Debug|x64
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Debug|x64.Build.0 = Debug|x64
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Debug|x86.ActiveCfg = Debug|Win32
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Debug|x86.Build.0 = Debug|Win32
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Release|x64.ActiveCfg = Release|x64
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Release|x64.Build.0 = Release|x64
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Release|x86.ActiveCfg = Release|Win32
+		{687C7D74-4382-4A41-AE17-28F556C22A11}.Release|x86.Build.0 = Release|Win32
+		{6A4ECEB4-B163-435D-B96B-6CBCA20F77FC}.Debug|x64.ActiveCfg = Debug|x64
+		{6A4ECEB4-B163-435D-B96B-6CBCA20F77FC}.Debug|x86.ActiveCfg = Debug|Win32
+		{6A4ECEB4-B163-435D-B96B-6CBCA20F77FC}.Release|x64.ActiveCfg = Release|x64
+		{6A4ECEB4-B163-435D-B96B-6CBCA20F77FC}.Release|x86.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23707B48-F5EB-410B-B823-A69BF92DCA88}
+	EndGlobalSection
+EndGlobal
