@@ -4,10 +4,12 @@
 #include "pch.h"
 #include <iostream>
 
+#include "IOCP.h"
 
 
 int main()
 {
+	IOCP iocp;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

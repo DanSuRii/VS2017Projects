@@ -10,6 +10,11 @@ class IOCP : public Network
 public:
 	IOCP();
 	virtual ~IOCP();
+
+	inline bool IsInit() { return bInit; }
+	operator bool() { return IsInit(); }
+	bool IsInvalidHandle(HANDLE handle);
+
 private:
 	static const int MAX_WORKER = 8;
 
@@ -19,6 +24,5 @@ private:
 	HANDLE hIOCP;
 
 	std::atomic_bool bRunning = false;
+	bool bInit = false;
 };
-
-

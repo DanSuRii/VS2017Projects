@@ -14,7 +14,7 @@ template< typename T >
 class AutoReset {
 public:
 	AutoReset(T* scoped_variable, T new_value)
-		: scoped_variable_(scoped_variable)
+		: scoped_vairable_(scoped_variable)
 		, original_value_(std::move(*scoped_variable))
 	{
 		*scoped_vairable_ = std::move(new_value);

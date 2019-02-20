@@ -1,11 +1,25 @@
 #include "pch.h"
 #include "IOCP.h"
 
-IOCP::IOCP()
+bool IOCP::IsInvalidHandle(HANDLE handle)
 {
+	return (handle == INVALID_HANDLE_VALUE || handle == NULL);
+}
+
+IOCP::IOCP()
+	: hIOCP(::CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, NULL, 0))
+{
+	if (IsInvalidHandle(hIOCP))
+	{
+		LOG_FN( "Failed to initialize IOCP handle: ", WSAGetLastError() );
+		return;
+	}
+
 	//std::generate(vecThreads.begin(), vecThreads.end(), [&] { return std::thread{ &IOCP::WorkerThread, this }; });
 	for (int i = 0; i < MAX_WORKER; ++i)
 		vecThreads.emplace_back( std::thread{ &IOCP::WorkerThread, this });
+
+	bInit = true;
 }
 
 IOCP::~IOCP()
@@ -18,13 +32,9 @@ IOCP::~IOCP()
 	}
 }
 
-class ICompletionKey
-{
-
-};
-
 void IOCP::WorkerThread()
 {
+	AutoReset< std::atomic_bool > runningReset( &bRunning, true );
 	while (true)
 	{
 		ICompletionKey* completionKey(nullptr);
@@ -41,7 +51,5 @@ void IOCP::WorkerThread()
 			LOG_FN(std::this_thread::get_id(), " >> Recevied exit ");
 			break;
 		}
-
-
 	}
 }

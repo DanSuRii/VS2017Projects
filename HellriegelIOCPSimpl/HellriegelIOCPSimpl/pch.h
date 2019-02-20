@@ -14,8 +14,10 @@
 #include <iostream>
 #include <atomic>
 
-#include "utilities.h"
 
+#include "utilities.h"
 #include "logger.h"
+
+#include "ICompletionKey.h"
 
 #endif //PCH_H
