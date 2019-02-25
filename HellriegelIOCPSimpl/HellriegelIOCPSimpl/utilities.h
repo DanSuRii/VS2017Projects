@@ -31,3 +31,9 @@ private:
 	T* scoped_vairable_;
 	T original_value_;
 };
+
+template< class T, class ... Args >
+std::shared_ptr<T> New(Args&& ... args)
+{
+	return std::make_shared< T >( std::forward<Args>(args) ... );
+}

@@ -14,10 +14,12 @@
 #include <iostream>
 #include <atomic>
 
+#include "types.h"
 
 #include "utilities.h"
 #include "logger.h"
 
+#include "IOCtx.h"
 #include "ICompletionKey.h"
 
 #endif //PCH_H

@@ -151,12 +151,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IOCtx.h" />
     <ClInclude Include="ICompletionKey.h" />
     <ClInclude Include="IOCP.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
+    <ClInclude Include="types.h" />
     <ClInclude Include="utilities.h" />
   </ItemGroup>
   <ItemGroup>

@@ -32,9 +32,20 @@ IOCP::~IOCP()
 	}
 }
 
+
+void IOCP::Delete(ICompletionKey * ptr)
+{
+	_contCompl._Delete(ptr);
+}
+
+void IOCP::Delete(IOCtx * ptr)
+{
+	_contIOCtx._Delete(ptr);
+}
+
 void IOCP::WorkerThread()
 {
-	AutoReset< std::atomic_bool > runningReset( &bRunning, true );
+	AutoReset< decltype(bRunning) > runningReset( &bRunning, true );
 	while (true)
 	{
 		ICompletionKey* completionKey(nullptr);
@@ -51,5 +62,13 @@ void IOCP::WorkerThread()
 			LOG_FN(std::this_thread::get_id(), " >> Recevied exit ");
 			break;
 		}
+
+		IOCtx* ioCur = static_cast<IOCtx*>(lpOverlapped);
+
+		PIOCtx ioNew = _contIOCtx._New< Concrete_IOCTX<EIO_READ> >();
+		Delete(ioNew.get());
+
+		
 	}
 }
+

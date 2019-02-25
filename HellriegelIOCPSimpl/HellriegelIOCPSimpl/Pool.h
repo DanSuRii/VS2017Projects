@@ -13,6 +13,19 @@ class Pool
 {
 public:
 	using KeyT = std::int64_t;
+
+	struct Out_T
+	{
+		KeyT idx = -1;
+		std::shared_ptr< T > _data;
+
+		Out_T() {};
+		Out_T(const Out_T&) {};
+		Out_T& operator=(const Out_T&) {};
+
+		virtual ~Out_T() {};
+	};
+
 	static const int DEFAULT_LEN = 256;
 
 	Pool(size_t contSize);
@@ -21,12 +34,13 @@ public:
 
 	Pool(const Pool&) = delete;
 	Pool& operator =(const Pool&) = delete;
+
+	//Out_T GetNew();
 private:
-	struct Data_T
-	{ 
-		KeyT nIdx = -1;
+	struct Data_T : public Out_T
+	{ 		
 		bool bUse = false;
-		std::shared_ptr< T > _data;
+		Pool* ptrBase;
 	};
 
 	std::shared_mutex _mtxCont;
