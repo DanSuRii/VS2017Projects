@@ -118,6 +118,13 @@ private:
 	SOCKET_CTX				_sockctxListen;	
 };
 
+class CltCtx : public ICompletionKey
+{
+public:
+private:
+};
+
+
 bool IOCP::IsInvalidHandle(HANDLE handle)
 {
 	return (handle == INVALID_HANDLE_VALUE || handle == NULL);
@@ -213,10 +220,37 @@ void IOCP::WorkerThread()
 		}
 
 		IOCtx* ioCur = static_cast<IOCtx*>(lpOverlapped);
+		if (nullptr == ioCur)
+		{
+			LOG_FN("SYSTEM_ERROR: null ioctx passed ");
+			continue;
+		}
+		//Reserve ioctx remove after this
+		RAII ioGrd([&] {Delete(ioCur); });
+
 
 		if (ioCur->GetMyT() == EIO_ACCEPT)
 		{
+			IOAccept* pAccept = dynamic_cast<IOAccept*>(ioCur);
+			if ( nullptr == pAccept )
+			{
+				LOG_FN("SYSTEM_ERROR: non IOAccept returns EIO_ACCPET ");
+				continue;
+			}
 
+			Listener* listener = dynamic_cast<Listener*>(completionKey);
+			if (nullptr == listener)
+			{
+				LOG_FN("SYSTEM_ERROR: someone else reserved acceptex ");
+				continue;
+			}
+			ReservAccept(*listener); //Reserv next accept
+
+			SOCKET_CTX sockctx( std::move( pAccept->socketToAccept )); //create new client ctx from this
+
+			//remove current ctx
+
+			continue;
 		}
 		completionKey, ioCur, dwIOSize;
 

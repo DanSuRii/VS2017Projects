@@ -23,3 +23,9 @@ SOCKET_CTX::~SOCKET_CTX()
 		_socket = INVALID_SOCKET;
 	}
 }
+
+SOCKET_CTX::SOCKET_CTX(SOCKET_CTX && rhs)
+{
+	_socket = rhs._socket;
+	rhs._socket = INVALID_SOCKET;
+}

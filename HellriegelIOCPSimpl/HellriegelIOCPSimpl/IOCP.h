@@ -60,7 +60,7 @@ public:
 				std::lock_guard< decltype(_mtxCont)> grd(_mtxCont);
 				_contData.erase(iterCur);
 			}
-		};
+		};		
 
 		{
 			std::lock_guard< decltype(_mtxCont)> grd(_mtxCont);
