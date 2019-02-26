@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #define DISALLOW_COPY( TypeName ) \
 	TypeName( const TypeName& ) = delete;
 
@@ -37,3 +39,22 @@ std::shared_ptr<T> New(Args&& ... args)
 {
 	return std::make_shared< T >( std::forward<Args>(args) ... );
 }
+
+class RAII
+{
+public:
+	using _CALLABLE = std::function< void(void) >;
+
+	RAII(_CALLABLE fn)
+		: _fn(fn)
+	{
+
+	}
+
+	~RAII()
+	{
+		if (_fn) _fn();
+	}
+private:
+	_CALLABLE _fn;
+};

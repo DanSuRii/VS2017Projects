@@ -1,9 +1,158 @@
 #include "pch.h"
 #include "IOCP.h"
 
+#include <cassert>
+
+#include <WS2tcpip.h>
+#include <MSWSock.h>
+
+class Listener : public ICompletionKey
+{
+public:
+	Listener( HANDLE hIocp, std::string strListenPort)
+		: _listenPort(std::move(strListenPort)), ICompletionKey( hIocp, _sockctxListen._socket )
+	{
+		LINGER lingerStruct;
+		lingerStruct.l_onoff = 1;
+		lingerStruct.l_linger = 0;
+
+		struct addrinfo hints = { 0 };
+		struct addrinfo *addrlocal = nullptr;
+
+		// Resolve the interface
+
+		hints.ai_flags = AI_PASSIVE;
+		hints.ai_family = AF_INET;
+		hints.ai_socktype = SOCK_STREAM;
+		hints.ai_protocol = IPPROTO_IP;
+
+		if ( 0 != ::getaddrinfo(nullptr, strListenPort.c_str(), &hints, &addrlocal)) {
+			LOG_FN(" getaddrinfo() failed with error: ", WSAGetLastError());
+			return;
+		}
+
+		if (nullptr == addrlocal)
+		{
+			LOG_FN(" getaddrinfo() failed to resolve/convert the interface ");
+			return;
+		}
+
+		RAII addrgrd([&] { ::freeaddrinfo(addrlocal); });
+
+		//msdn https://docs.microsoft.com/en-us/windows/desktop/api/winsock2/nf-winsock2-socket
+		//sock wiull be create OVERLAPPED
+
+		auto nRet = ::bind( _sockctxListen._socket, addrlocal->ai_addr, (int) addrlocal->ai_addrlen );
+		if (SOCKET_ERROR == nRet)
+		{
+			LOG_FN(" bind() failed: ", WSAGetLastError());
+			return;
+		}
+
+		nRet = ::listen(_sockctxListen._socket, 5);
+		if (SOCKET_ERROR == nRet)
+		{
+			LOG_FN( "listen() failed: ", WSAGetLastError() );
+			return;
+		}
+
+		GUID acceptex_guid = WSAID_ACCEPTEX;
+		nRet = WSAIoctl(
+			_sockctxListen._socket,
+			SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&acceptex_guid,
+			sizeof(acceptex_guid),
+			&_fnAcceptEx,
+			sizeof(_fnAcceptEx),
+			&dwFnBytes,
+			NULL,
+			NULL
+		);
+		if (SOCKET_ERROR == nRet)
+		{
+			LOG_FN( "failed to load AcceptEx: ", WSAGetLastError() );
+			return;
+		}
+
+		bInit = true;
+	}
+
+	bool AsyncAccept( IOAccept& acceptIO )
+	{
+		assert( INVALID_SOCKET != _sockctxListen._socket );
+		if (INVALID_SOCKET == acceptIO.socketToAccept._socket)
+		{
+			LOG_FN(" Invalid socketToAccept  ");
+			return false;
+		}
+
+		const int nMaxBuffer = sizeof(acceptIO.buffer);
+		const int addressLen = sizeof(SOCKADDR_STORAGE) + 16;
+		
+		auto nRet = _fnAcceptEx( _sockctxListen._socket, acceptIO.socketToAccept._socket,
+			(LPVOID)acceptIO.buffer, nMaxBuffer - (2*addressLen),
+			addressLen, addressLen, acceptIO.GetRecevedBytePtr(),
+			static_cast<LPOVERLAPPED>(&acceptIO));
+
+		if (SOCKET_ERROR == nRet && ERROR_IO_PENDING != WSAGetLastError())
+		{
+			LOG_FN( "AcceptEx() failed: ", WSAGetLastError() );
+			return false;
+		}
+
+		return true;
+	}
+
+	~Listener()
+	{
+
+	}
+
+	inline bool IsInit() { return bInit; }
+private:	
+	LPFN_ACCEPTEX		_fnAcceptEx;
+	DWORD				dwFnBytes = 0;
+
+	std::atomic_bool bInit = false;
+	std::string		_listenPort;
+	SOCKET_CTX				_sockctxListen;	
+};
+
 bool IOCP::IsInvalidHandle(HANDLE handle)
 {
 	return (handle == INVALID_HANDLE_VALUE || handle == NULL);
+}
+
+bool IOCP::Listen(std::string strPort)
+{
+	auto listener = NewKey<Listener>(hIOCP,strPort);
+	Listener* pCur = dynamic_cast<Listener*>( listener.get() );
+
+	if (nullptr == pCur)
+	{
+		LOG_FN( "Failed to create Listener" );
+		Delete(listener.get());
+		return false;
+	}
+
+	return ReservAccept(*pCur);	
+}
+
+bool IOCP::ReservAccept(Listener& listener)
+{
+	auto ioAccept = NewIO< IOAccept >();
+	IOAccept* pIoAccept = dynamic_cast<IOAccept*>(ioAccept.get());
+
+	if (nullptr == pIoAccept)
+	{
+		LOG_FN("Failed to create new Accpet");
+		Delete(ioAccept.get());
+		return false;
+	}
+
+	listener.AsyncAccept(*pIoAccept);
+
+	return false;
 }
 
 IOCP::IOCP()
@@ -65,10 +214,16 @@ void IOCP::WorkerThread()
 
 		IOCtx* ioCur = static_cast<IOCtx*>(lpOverlapped);
 
-		PIOCtx ioNew = _contIOCtx._New< Concrete_IOCTX<EIO_READ> >();
-		Delete(ioNew.get());
+		if (ioCur->GetMyT() == EIO_ACCEPT)
+		{
 
-		
+		}
+		completionKey, ioCur, dwIOSize;
+
+		/*
+		PIOCtx ioNew = _contIOCtx._New< IORead >();
+		Delete(ioNew.get());		
+		*/
 	}
 }
 

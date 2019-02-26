@@ -10,6 +10,20 @@
 int main()
 {
 	IOCP iocp;
+	if (false == iocp.IsInit())
+	{
+		LOG_FN("iocp init failed");
+		return 0;
+	}
+
+	if (false == iocp.Listen("38000"))
+	{
+		LOG_FN( "Listen Failed" );
+		return 0;
+	}
+
+	Log( "Alive unit any key pressed.." );
+	::system("pause");
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class CKID
 {
 public:
@@ -16,14 +18,13 @@ private:
 class ICompletionKey
 {
 public:
-	ICompletionKey()
-	{
-		_idClt = -1;
-	}
+	ICompletionKey(HANDLE hIocp, SOCKET sockToJoin);
+	/*
 	ICompletionKey(ClientID idClt)
 		: _idClt(idClt)
 	{
 	};
+	*/
 
 	virtual ~ICompletionKey()
 	{
@@ -34,9 +35,16 @@ public:
 	ICompletionKey& operator=(const ICompletionKey&) = delete;
 
 	virtual void Dispose() = 0;
-	virtual void Handle(class IOCtx*) = 0;
+	//virtual void Handle(class IOCtx*) = 0;
 
 	inline ClientID GetID() { _idClt; }
+
+	//TODO:must check all derived chain
+	bool IsInit() { return bInit; }
 private:
+	HANDLE _hIocp;
 	ClientID _idClt;
+
+	std::atomic_bool bInit = false;
 };
+using PICompletionKey = std::shared_ptr<ICompletionKey>;

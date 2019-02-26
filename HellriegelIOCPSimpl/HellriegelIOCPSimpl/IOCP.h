@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <list>
 #include <mutex>
+#include <functional>
 
 #include "Network.h"
 
@@ -13,18 +14,21 @@ class ContManaged
 public:
 	using _PManaged = std::shared_ptr<_Managed>;
 	using TCONT_DATA = std::list< _PManaged >;
+	using IterT = typename TCONT_DATA::iterator;
+	using _FN_DISPOSE = std::function< void(IterT) >;
 private:
 	TCONT_DATA _contData;
-	std::mutex mtxCont;
+	std::mutex _mtxCont;
+	
 public:
 
-	template< class T, class IterT = TCONT_DATA::iterator >
-	std::shared_ptr<T> _New()
+	template< class T, class ... Args >
+	auto _New(Args&& ... args )
 	{
 		struct _Data : public T
 		{
-			_Data(TCONT_DATA& cont)
-				: _cont(cont)
+			_Data(_FN_DISPOSE fnDispose, TCONT_DATA& cont, Args&& ...args)
+				: _fnDispose(fnDispose), T( std::forward<Args>(args)...)
 			{
 
 			}
@@ -37,26 +41,33 @@ public:
 			{
 				if (callOnce)
 				{
-					{
-						std::lock_guard< decltype(mtxCont)> grd(mtxCont);
-						_cont.remove(_iterCur);
-					}
+					if (_fnDispose) _fnDispose(_iterCur);
 					callOnce = false;
 				}
 			}
 
 			IterT _iterCur;
-			TCONT_DATA& _cont;
+			//TCONT_DATA& _cont;
+			_FN_DISPOSE _fnDispose;
+
 			std::atomic_bool callOnce = true;
 		};
 
 		IterT iter = _contData.end(); //it possible invalid, but do not care
 
+		auto fnDispose = [&](IterT iterCur) {
+			{
+				std::lock_guard< decltype(_mtxCont)> grd(_mtxCont);
+				_contData.erase(iterCur);
+			}
+		};
+
 		{
-			std::lock_guard< decltype(mtxCont)> grd(mtxCont);
-			iter = _contData.insert(_contData.end(), New<_Data>(_contData));
+			std::lock_guard< decltype(_mtxCont)> grd(_mtxCont);
+			iter = _contData.insert(_contData.end(), New<_Data>(fnDispose, _contData, std::forward<Args>(args)...));
 		}
-		static_cast<_Data*>((*iter)->get())->_iterCur = iter;
+		auto ptrCur = (*iter);
+		static_cast<_Data*>( ptrCur.get() )->_iterCur = iter;
 
 		return *iter;
 	}
@@ -80,7 +91,12 @@ public:
 	operator bool() { return IsInit(); }
 	bool IsInvalidHandle(HANDLE handle);
 
+	//is it possible to service by ports?
+	bool Listen( std::string strPort );
+
 private:
+
+	bool ReservAccept( class Listener& listener );
 	
 	/*
 	struct Data : public ICompletionKey
@@ -147,16 +163,22 @@ private:
 #endif // false	
 	
 	ContManaged<ICompletionKey> _contCompl;
+	template<typename T, class ... Args>
+	PICompletionKey NewKey(Args&&... args)
+	{
+		return _contCompl._New<T>(std::forward<Args>(args)...);
+	}
+
 	ContManaged<IOCtx>			_contIOCtx;
+	template<typename T, class ... Args>
+	PIOCtx NewIO( Args&&... args )
+	{
+		return _contIOCtx._New<T>( std::forward<Args>(args) ... );
+	}
 
 	void Delete(ICompletionKey*);
 	void Delete(IOCtx*);
 
-	template<class T>
-	void _NewCompKey()
-	{
-
-	}
 
 	static const int MAX_WORKER = 8;
 
