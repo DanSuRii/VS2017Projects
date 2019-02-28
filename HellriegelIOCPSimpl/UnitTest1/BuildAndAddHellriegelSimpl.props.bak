@@ -8,14 +8,8 @@
       <AdditionalDependencies>HellIOCPSimpl_$(Configuration)_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PreLinkEvent>
-      <Command>
-      </Command>
-    </PreLinkEvent>
+    <PreLinkEvent />
     <PreBuildEvent />
-    <PreBuildEvent>
-      <Command>msbuild $(SolutionDir)HellriegelIOCPSimpl\HellriegelIOCPSimpl.vcxproj /p:ConfigurationType=StaticLibrary;OutDir=lib\;Configuration=$(Configuration);PlatformTarget=$(PlatformTarget);TargetName=HellIOCPSimpl_$(Configuration)_$(PlatformTarget)</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

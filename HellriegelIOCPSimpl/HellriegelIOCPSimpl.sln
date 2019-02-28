@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HellriegelIOCPSimpl", "HellriegelIOCPSimpl\HellriegelIOCPSimpl.vcxproj", "{7009C2B4-4FFB-46C0-BB22-A0C052681177}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{77B5463C-04B7-4094-ADCB-C4E6D4929E25}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7009C2B4-4FFB-46C0-BB22-A0C052681177} = {7009C2B4-4FFB-46C0-BB22-A0C052681177}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

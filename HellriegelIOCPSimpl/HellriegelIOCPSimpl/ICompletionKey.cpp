@@ -14,7 +14,6 @@ CKID::CKID()
 ICompletionKey::ICompletionKey(HANDLE hIocp, SOCKET sockToJoin)
 	: _hIocp(hIocp)
 {
-	_idClt = -1;
 
 	assert(INVALID_HANDLE_VALUE != _hIocp, "INVALID_HANDLE_VALUE");
 	assert(NULL != hIocp, " HANDLE is NULL ");

@@ -4,25 +4,26 @@
 #include <list>
 #include <shared_mutex>
 
-class IBufHandle
+class BufferPool : public IBufferPool
 {
 public:
-	virtual char* GetBufPtr() = 0;
-	virtual size_t GetBufferSize() = 0;
-};
-using PIBufHandle = std::shared_ptr<IBufHandle>;
+	struct Buffer
+	{
+		virtual ~Buffer()
+		{
 
-class BufferPool
-{
-public:
+		}
+		BYTEBUFFER buf;
+	};
+
 	static const int DEFAULT_POOL_SIZE = 256;
 	BufferPool(size_t initLen);
 
 	BufferPool();
-	struct Buffer
+	~BufferPool()
 	{
-		BYTEBUFFER buf;
-	};
+
+	}
 
 	using T_ELEM = std::shared_ptr<Buffer>;
 	using T_CONT = std::list< T_ELEM >;
@@ -49,10 +50,12 @@ private:
 				_fnDestruct(iterInUse);
 		}
 
+		///someone possible to copy this char* to abuse, but there are no way to prevent this...
 		virtual char*	GetBufPtr() override { return (*iterInUse)->buf; }
 		virtual size_t	GetBufferSize() override { return sizeof((*iterInUse)->buf); }
 
 	private:
+		UniqueID<BUF_HANDLE> myID;
 		FN_DESTRUCT _fnDestruct;
 		TIter iterInUse;
 	};

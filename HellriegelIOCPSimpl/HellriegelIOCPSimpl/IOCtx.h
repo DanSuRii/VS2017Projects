@@ -1,6 +1,7 @@
 #pragma once
 
 #include <WinSock2.h>
+#include "IBufHandle.h"
 
 enum EIOCTX
 {
@@ -13,22 +14,40 @@ enum EIOCTX
 class IOCtx : public OVERLAPPED
 {
 public:
+
 	virtual ~IOCtx()
 	{
 
 	}
 	virtual void Dispose() = 0;
 	virtual EIOCTX GetMyT() = 0;
+
+protected:
 };
 
 using PIOCtx = std::shared_ptr< IOCtx >;
 
-template< EIOCTX cur, class Derived >
+template< EIOCTX cur, class Derived, bool bIBufHandle >
 class IMPL_IOCTX : public IOCtx
+{
+public:
+	IMPL_IOCTX() = delete;
+	IMPL_IOCTX(const IMPL_IOCTX&) = delete;
+	IMPL_IOCTX& operator=(const IMPL_IOCTX&) = delete;
+	virtual void DO_NOT_INEHRIT_FROM_HERE() = 0; //normally impossible, but notify
+};
+
+//dont use buff version, its normal
+template< EIOCTX cur, class Derived >
+class IMPL_IOCTX<cur, Derived, /* bIBufHandle= */false> : public IOCtx
 {	
 public:
 	using _MyT = Derived;
 	virtual inline EIOCTX GetMyT() { return cur; }
+
+	IMPL_IOCTX()
+	{
+	}
 
 	virtual ~IMPL_IOCTX()
 	{
@@ -36,44 +55,107 @@ public:
 	}
 };
 
-template< EIOCTX cur >
-class Concrete_IOCTX : public IMPL_IOCTX< cur, Concrete_IOCTX<cur> >
+//use buff version
+template< EIOCTX cur, class Derived >
+class IMPL_IOCTX<cur, Derived, /* bIBufHandle= */true> : public IOCtx
 {
 public:
-};
+	using _MyT = Derived;
+	virtual inline EIOCTX GetMyT() { return cur; }
 
-class IOAccept : public Concrete_IOCTX<EIO_ACCEPT>
-{
-public:
-	IOAccept();
-	virtual ~IOAccept()
+	IMPL_IOCTX(PIBufHandle&& pBufHandle);
+	IMPL_IOCTX(const IMPL_IOCTX&) = delete;
+	IMPL_IOCTX& operator=(const IMPL_IOCTX&) = delete;
+
+	virtual ~IMPL_IOCTX()
 	{
 
 	}
 
+	//Wrapper for access buff
+	inline char* GetBuf() {
+		//assert(nullptr != _bufHandle);
+		if (nullptr == _bufHandle) {
+			LOG_FN("SYSTEM_ERROR: BuffHandle impossible to ");
+			_CrtDbgBreak();
+			return nullptr;
+		}
+
+		return _bufHandle->GetBufPtr();
+	}
+	inline size_t GetBufLen() {
+		//assert(nullptr != _bufHandle);
+		if (nullptr == _bufHandle) {
+			LOG_FN("SYSTEM_ERROR: BuffHandle impossible to ");
+			_CrtDbgBreak();
+			return 0;
+		}
+		return _bufHandle->GetBufferSize();
+	}
+
+
+protected:
+	//this member impossible to null
+	PIBufHandle _bufHandle;
+
+private:
+	IMPL_IOCTX() = delete;
+};
+
+
+template< class TDerived ,EIOCTX cur, bool bIBufHandle = false >
+class Concrete_IOCTX : public IMPL_IOCTX< cur, TDerived, bIBufHandle >
+{
+public:
+	using _IMPL_IOCTX_T = IMPL_IOCTX< cur, TDerived, bIBufHandle >;
+	
+	template< class ... Args >
+	Concrete_IOCTX(Args&& ...args)
+		: _IMPL_IOCTX_T( std::forward<Args>(args) ... )
+	{
+
+	}
+};
+
+class IOAccept : public Concrete_IOCTX<IOAccept, EIO_ACCEPT, true>
+{
+public:
+	using _PartenType = Concrete_IOCTX<IOAccept, EIO_ACCEPT, true>;
+	IOAccept(PIBufHandle&& bufHandle);
+	virtual ~IOAccept()
+	{
+	}
+
 	SOCKET_CTX socketToAccept;
-	READBUFFER buffer;
 
 	inline bool IsInit() { return bInit; }
 	LPDWORD		GetRecevedBytePtr() { return &dwRecevedBytes; }
+
 private:	
 	DWORD		dwRecevedBytes;
 
 	std::atomic_bool bInit = false;
+	
 };
 
-class IORead : public Concrete_IOCTX<EIO_READ>
+class IORead : public Concrete_IOCTX<IORead, EIO_READ>
 {
 public:
-private:
+	IORead()
+	{
 
+	}
+private:
 };
 
-class IOWrite : public Concrete_IOCTX<EIO_WRITE>
+class IOWrite : public Concrete_IOCTX<IOWrite, EIO_WRITE>
 {
 public:
-private:
+	IOWrite()
+	{
 
+	}
+private:
 };
 
 #if false
@@ -99,3 +181,4 @@ DECL_IOCTX(EIO_READ)
 };
 
 #endif // false
+

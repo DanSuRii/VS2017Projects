@@ -84,7 +84,7 @@ public:
 class IOCP : public Network
 {
 public:
-	IOCP();
+	IOCP(IBufferPool& bufferPool);;
 	virtual ~IOCP();
 
 	inline bool IsInit() { return bInit; }
@@ -184,9 +184,21 @@ private:
 
 	void WorkerThread();
 
+	bool Handle(IOAccept&, class Listener&, DWORD dwIoSize);
+	bool Handle(IORead&, class CltCtx&	, DWORD dwIoSize);
+	bool Handle(IOWrite&, class CltCtx&	, DWORD dwIoSize);
+	bool Handle(IOCtx*, ICompletionKey*, DWORD dwIoSize);
+
+	template< class T_IO, class T_ComplKey >
+	bool CheckAndCall(IOCtx*, ICompletionKey*, DWORD dwIoSize);
+	
+		 
 	std::vector< std::thread > vecThreads;/* = decltype(vecThreads)(MAX_WORKER);*/
 	HANDLE hIOCP;
+	
+	IBufferPool& _bufferPool;
 
 	bool bRunning = false;
 	bool bInit = false;
 };
+

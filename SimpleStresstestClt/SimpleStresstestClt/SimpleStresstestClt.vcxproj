@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{7009C2B4-4FFB-46C0-BB22-A0C052681177}</ProjectGuid>
+    <ProjectGuid>{F9566542-AFAA-4DF1-94FB-5B611D393C58}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>HellriegelIOCPSimpl</RootNamespace>
+    <RootNamespace>SimpleStresstestClt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -151,27 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BufferPool.h" />
-    <ClInclude Include="constants.h" />
-    <ClInclude Include="IBufHandle.h" />
-    <ClInclude Include="Interfaces.h" />
-    <ClInclude Include="IOCtx.h" />
-    <ClInclude Include="ICompletionKey.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="IOCP.h" />
-    <ClInclude Include="logger.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Pool.h" />
-    <ClInclude Include="SOCKET_CTX.h" />
-    <ClInclude Include="types.h" />
-    <ClInclude Include="utilities.h" />
+    <ClInclude Include="utilityTpl.h" />
+    <ClInclude Include="Utility_Macros.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BufferPool.cpp" />
-    <ClCompile Include="HellriegelIOCPSimpl.cpp" />
-    <ClCompile Include="ICompletionKey.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="IOCP.cpp" />
-    <ClCompile Include="IOCtx.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -179,9 +168,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Pool.cpp" />
-    <ClCompile Include="SOCKET_CTX.cpp" />
-    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="SimpleStresstestClt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

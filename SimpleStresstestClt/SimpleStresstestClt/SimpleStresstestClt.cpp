@@ -1,41 +1,53 @@
-// HellriegelIOCPSimpl.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// SimpleStresstestClt.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include "pch.h"
 #include <iostream>
 
-#include "IOCP.h"
+#include <cstdint>
+#include <list>
 
-#include "BufferPool.h"
+#include <atomic>
+
+
+//Resolution 20 per 1Seconds, 
+
+
+class Ticker
+{
+	
+
+public:
+	std::atomic_uint64_t _Tick;
+};
+
+
+class LogMsgProvider
+{
+public:
+
+private:
+	
+};
+
+class ILogConsumer
+{
+
+};
+
+class ConsoleLog : public ILogConsumer
+{
+
+};
+
+class FileLog : public ILogConsumer
+{
+
+};
 
 int main()
 {
-	//Make some code for genereate debug info....lol
-
-	BufferPool bufferPool; //it provides safe to every objects return , it will guarentee bufferPool dispose after IOCP
-	{
-		auto cur = bufferPool.GetNewBuf();
-
-		PIBufHandle newHandle(cur);
-	}
-
-	IOCP iocp(bufferPool);
-	if (false == iocp.IsInit())
-	{
-		LOG_FN("iocp init failed");
-		return 0;
-	}
-
-	if (false == iocp.Listen("38000"))
-	{
-		LOG_FN("Listen Failed");
-		return 0;
-	}
-
-	Log("Alive unit any key pressed..");
-	::system("pause");
-
-	//TODO: guarentee Buffer pool returned
+    std::cout << "Hello World!\n"; 
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
@@ -48,4 +60,3 @@ int main()
 //   4. Use the Error List window to view errors
 //   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
 //   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
-

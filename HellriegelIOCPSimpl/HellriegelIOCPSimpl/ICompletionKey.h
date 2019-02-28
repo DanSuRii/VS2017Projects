@@ -37,13 +37,14 @@ public:
 	virtual void Dispose() = 0;
 	//virtual void Handle(class IOCtx*) = 0;
 
-	inline ClientID GetID() { _idClt; }
+	inline auto GetID() { return idCur.GetID(); }
 
 	//TODO:must check all derived chain
 	bool IsInit() { return bInit; }
 private:
 	HANDLE _hIocp;
-	ClientID _idClt;
+
+	CKID idCur;
 
 	std::atomic_bool bInit = false;
 };

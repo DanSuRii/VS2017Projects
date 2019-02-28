@@ -11,19 +11,11 @@
 
 // TODO: add headers that you want to pre-compile here
 #include <WinSock2.h>
+
 #include <iostream>
-#include <atomic>
+#include <string>
 
-#include "constants.h"
-#include "types.h"
-
-#include "utilities.h"
-#include "logger.h"
-
-#include "Interfaces.h"
-
-#include "SOCKET_CTX.h"
-#include "IOCtx.h"
-#include "ICompletionKey.h"
+#include "Utility_Macros.h"
+#include "utilityTpl.h"
 
 #endif //PCH_H

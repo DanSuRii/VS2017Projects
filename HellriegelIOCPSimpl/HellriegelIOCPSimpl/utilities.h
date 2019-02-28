@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <functional>
 
 #define DISALLOW_COPY( TypeName ) \
@@ -58,3 +59,20 @@ public:
 private:
 	_CALLABLE _fn;
 };
+
+template< class Type >
+class UniqueID
+{
+public:
+	UniqueID()		
+	{
+		static std::atomic_int64_t generator;
+		_id = ++generator;
+	}	
+
+
+	const auto GetID() { return _id; };
+private:
+	std::int64_t _id;
+};
+

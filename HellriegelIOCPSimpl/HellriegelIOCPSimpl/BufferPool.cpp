@@ -26,6 +26,8 @@ PIBufHandle BufferPool::GetNewBuf()
 		toRet = _listAvailable.front();
 		_listAvailable.pop_front();
 	}
+	if (nullptr == toRet)
+		toRet = New<Buffer>();
 
 	TIter iter;
 	{
@@ -40,7 +42,8 @@ void BufferPool::_Recycle(TIter iter)
 {
 	{
 		std::unique_lock< decltype(mtxAvail) > uqgrd(mtxAvail);
-		_listAvailable.push_back(*iter);
+		//_listAvailable.push_back(*iter);
+		_listAvailable.push_front(*iter); //it will make better to use previous generated buffer efficently
 	}
 
 	{
@@ -51,6 +54,10 @@ void BufferPool::_Recycle(TIter iter)
 
 void BufferPool::_growAvailable()
 {
+	if (currentPoolSize <= 0)
+	{
+		currentPoolSize = DEFAULT_POOL_SIZE;
+	}
 	T_CONT _listTemp(currentPoolSize);
 	_listAvailable.splice(_listAvailable.end(), std::move(_listTemp));
 
