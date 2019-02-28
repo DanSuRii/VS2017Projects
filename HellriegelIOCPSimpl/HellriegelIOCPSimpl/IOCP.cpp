@@ -209,34 +209,6 @@ void IOCP::Delete(IOCtx * ptr)
 	_contIOCtx._Delete(ptr);
 }
 
-#if false
-using MSGHANDLER = std::function< bool(IOCtx&, ICompletionKey&, DWORD) >;
-class MsgHandlers
-{
-	MSGHANDLER[EIO_CNT];
-};
-
-class IMsgHandler
-{
-public:
-	IMsgHandler()
-	{
-
-	}
-
-	virtual void Handle();
-};
-
-template< class Derived >
-class ConcreteHandler : IMsgHandler
-{
-public:
-
-private:
-
-};
-#endif // false
-
 void IOCP::WorkerThread()
 {
 	AutoReset< decltype(bRunning) > runningReset(&bRunning, true);

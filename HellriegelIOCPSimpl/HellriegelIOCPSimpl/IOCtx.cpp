@@ -33,6 +33,8 @@ IMPL_IOCTX<cur, Derived, true>::IMPL_IOCTX(PIBufHandle && pBufHandle)
 }
 
 
+//It doesnt need to Base's template parameter, cause ambiguity capture
+//to refer: https://www.fluentcpp.com/2017/12/26/emulate-super-base/
 IOAccept::IOAccept(PIBufHandle && bufHandle)
 	: Concrete_IOCTX( std::forward<PIBufHandle>( bufHandle ) )
 	,dwRecevedBytes(0)

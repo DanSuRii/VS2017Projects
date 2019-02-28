@@ -120,7 +120,7 @@ public:
 class IOAccept : public Concrete_IOCTX<IOAccept, EIO_ACCEPT, true>
 {
 public:
-	using _PartenType = Concrete_IOCTX<IOAccept, EIO_ACCEPT, true>;
+	//using _PartenType = Concrete_IOCTX<IOAccept, EIO_ACCEPT, true>;
 	IOAccept(PIBufHandle&& bufHandle);
 	virtual ~IOAccept()
 	{

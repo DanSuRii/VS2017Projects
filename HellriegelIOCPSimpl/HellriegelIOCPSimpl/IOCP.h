@@ -84,7 +84,7 @@ public:
 class IOCP : public Network
 {
 public:
-	IOCP(IBufferPool& bufferPool);;
+	IOCP(IBufferPool& bufferPool);
 	virtual ~IOCP();
 
 	inline bool IsInit() { return bInit; }
