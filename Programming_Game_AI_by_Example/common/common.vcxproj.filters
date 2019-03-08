@@ -41,5 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LibraryProps.props" />
+    <None Include="commonIncludes.props" />
   </ItemGroup>
 </Project>

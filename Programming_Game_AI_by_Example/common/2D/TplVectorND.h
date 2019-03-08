@@ -14,13 +14,16 @@ namespace NS_VECTOR
 		VECTOR_CNT
 	};
 
+#if false
 	enum V3D
 	{
-		_X,
-		_Y,
-		_Z,
+		EV3_X,
+		EV3_Y,
+		EV3_Z,
 		VECTOR_CNT
 	};
+
+#endif // false
 }
 
 namespace NS_DP
@@ -67,7 +70,7 @@ namespace NS_DP
 		inline T_INTERNAL Distance(const _MyT& v2) const;
 
 		//squared version of above
-		inline T_INTERNAL DistanceSq(const Vector2D &v2) const;
+		inline T_INTERNAL DistanceSq(const _MyT &v2) const;
 
 		//returns the vector that is the reverse of this vector
 		inline _MyT GetReverse() const;
@@ -106,13 +109,13 @@ namespace NS_DP
 	}
 
 	template<class EType>
-	inline Vector<EType>::T_INTERNAL Vector<EType>::Length() const
+	inline typename Vector<EType>::T_INTERNAL Vector<EType>::Length() const
 	{		
 		return std::sqrt(LengthSq());
 	}
 	
 	template<class EType>
-	inline Vector<EType>::T_INTERNAL Vector<EType>::LengthSq() const
+	inline typename Vector<EType>::T_INTERNAL Vector<EType>::LengthSq() const
 	{
 		T_CONT powed;
 		std::transform(_vec.begin(), _vec.end(), std::back_inserter(powed)
@@ -120,7 +123,7 @@ namespace NS_DP
 		return std::accumulate(powed.begin(), powed.end(), -0.0);
 	}
 	template<class EType>
-	inline Vector<EType>::T_INTERNAL Vector<EType>::Dot(const _MyT & v2) const
+	inline typename Vector<EType>::T_INTERNAL Vector<EType>::Dot(const _MyT & v2) const
 	{
 		return std::inner_product(_vec.begin(), _vec.end(), v2.begin(), 0.0);
 	}
@@ -129,7 +132,7 @@ namespace NS_DP
 namespace NS_DP
 {
 	using Vector2D = Vector<NS_VECTOR::V2D>;
-	using Vector3D = Vector<NS_VECTOR::V3D>;
+	//using Vector3D = Vector<NS_VECTOR::V3D>;
 }
 
 
