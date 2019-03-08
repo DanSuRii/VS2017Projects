@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+message Req_Liquidplan {
+	google.protobuf.Timestamp begin = 1;
+	google.protobuf.Timestamp end = 2;
+}
+
+message Res_Liquidplan {
+	enum ESucceed{
+		SUCCEED=0;
+		FAILURE=1;
+	}
+}
+
+message Info_LiquidPlan{
+	string UNCPath = 1;
+}

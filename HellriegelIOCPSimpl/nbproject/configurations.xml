@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="HellriegelIOCPSimpl">
+        <in>BufferPool.cpp</in>
+        <in>BufferPool.h</in>
+        <in>HellriegelIOCPSimpl.cpp</in>
+        <in>ICompletionKey.cpp</in>
+        <in>ICompletionKey.h</in>
+        <in>IOCP.cpp</in>
+        <in>IOCP.h</in>
+        <in>IOCP__CANCELLED.h</in>
+        <in>IOCtx.cpp</in>
+        <in>IOCtx.h</in>
+        <in>Network.cpp</in>
+        <in>Network.h</in>
+        <in>Pool.cpp</in>
+        <in>Pool.h</in>
+        <in>SOCKET_CTX.cpp</in>
+        <in>SOCKET_CTX.h</in>
+        <in>constants.h</in>
+        <in>logger.h</in>
+        <in>pch.cpp</in>
+        <in>pch.h</in>
+        <in>types.h</in>
+        <in>utilities.h</in>
+      </df>
+      <df name="UnitTest1">
+        <in>stdafx.cpp</in>
+        <in>stdafx.h</in>
+        <in>targetver.h</in>
+        <in>unittest1.cpp</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="HellriegelIOCPSimpl/BufferPool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/BufferPool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/HellriegelIOCPSimpl.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/ICompletionKey.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/ICompletionKey.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/IOCP.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/IOCP.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/IOCP__CANCELLED.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/IOCtx.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/IOCtx.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/Network.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/Network.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/Pool.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/Pool.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/SOCKET_CTX.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/SOCKET_CTX.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/constants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/pch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/pch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HellriegelIOCPSimpl/utilities.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UnitTest1/stdafx.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="UnitTest1/stdafx.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UnitTest1/targetver.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="UnitTest1/unittest1.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

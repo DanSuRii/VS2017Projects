@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto"
+
+message RegKondObserver{}
+
+message KondGVList
+{
+	int64 id = 1;
+	int64 VBNR =2;
+	int64 IDKOND = 3;
+	enum ERGType{
+		ALL = 0;
+		RG = 1;
+		GU = 2;
+	}
+	double PCT = 4;
+	string Description = 5;
+	google.protobuf.Timestamp begin=6;
+	google.protobuf.Timestamp end=7;
+} 
+
+message Info_KondGVLists
+{
+	repeated KondGVList gvList;
+}
