@@ -15,41 +15,43 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="..\src\BaseGameEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="2D\TplVectorND.h">
+    <ClInclude Include="..\src\Miner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="2D\Vector2D.h">
+    <ClInclude Include="..\src\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="misc\utils.h">
+    <ClInclude Include="..\src\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Game\BaseGameEntity.h">
+    <ClInclude Include="..\src\EntityNames.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="misc\Logger.h">
+    <ClInclude Include="..\src\MinerStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="2D\Vector2D.cpp">
+    <ClCompile Include="Westworld1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="misc\Logger.cpp">
+    <ClCompile Include="..\src\Miner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MinerStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\LibraryProps.props" />
-    <None Include="commonIncludes.props" />
+    <None Include="..\IncludeCommon.props" />
   </ItemGroup>
 </Project>
